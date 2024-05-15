@@ -1,0 +1,9 @@
+# The following query lets you see all movies and people up to six hops away from Kevin Bacon:
+MATCH (:Person {name:"Kevin Bacon"})-[*1..6]-(n)
+RETURN DISTINCT n
+
+# But is it true that every actor is really connected to Kevin Bacon? Cypher has a built-in algorithm for this, "Shortest Path" and it looks like this:
+MATCH path=shortestPath(
+  (:Person {name:"Kevin Bacon"})-[*]-(:Person {name:"Meg Ryan"})
+)
+RETURN path, length(path) / 2 as distance
