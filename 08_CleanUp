@@ -1,0 +1,8 @@
+# This dataset is fun to experiment with, but once you are done, you can delete everything with the following:
+MATCH (n:Person|Movie)
+DETACH DELETE n
+
+# You can verify that there is nothing left by a simple query:
+MATCH ()
+RETURN count (*)
+
