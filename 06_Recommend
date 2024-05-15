@@ -1,0 +1,12 @@
+# A basic recommendation approach is to find connections past an immediate neighborhood of nodes which are themselves well-connected. For Tom Hanks, this means to find actors who he has yet to work with, but who has worked with his previous co-actors. Then you need to find someone who can introduce Tom Hanks to his potential new co-actor.
+To find a list of potential co-actors, run the following query:
+MATCH (p:Person {name:"Tom Hanks"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors),
+  (coActors)-[:ACTED_IN]->(m2)<-[:ACTED_IN]-(cocoActors)
+WHERE NOT exists { (p)-[:ACTED_IN]->()<-[:ACTED_IN]-(cocoActors) } AND p <> cocoActors
+RETURN cocoActors.name AS recommended, count(*) AS score ORDER BY score DESC
+
+# The WHERE part of the query ensures that you don’t get actors who already worked with Tom Hanks and nor Tom Hanks himself. The results are ordered by the number of co-occurrences they have in common.
+Now, if you think it would be a good idea for Tom Hanks and Keanu Reeves to do a movie together, who would be able to introduce them, and in which movies have they acted jointly?
+MATCH (p1:Person {name:"Tom Hanks"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors),
+  (coActors)-[:ACTED_IN]->(m2)<-[:ACTED_IN]-(p2:Person {name:"Keanu Reeves"})
+RETURN DISTINCT coActors.name AS matchmaker
