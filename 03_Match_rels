@@ -1,0 +1,20 @@
+# Can you specify a pattern to find who directed Cloud Atlas? Hint: The relationship between a person who is a director and the movie they directed is :DIRECTED.
+MATCH (p:Person {name: "Tom Hanks"})-[:ACTED_IN]->(movie)
+RETURN p,movie
+
+MATCH (m:Movie {title: "Cloud Atlas"})<-[:DIRECTED]-(director:Person)
+RETURN director.name
+
+
+# If you want to see this all as a graph, the easiest way is to return the path of your patterns.
+MATCH (:Person {name:"Tom Hanks"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors)
+RETURN coActors.name
+
+# If you want to see this all as a graph, the easiest way is to return the path of your patterns.
+MATCH path= (:Person {name:"Tom Hanks"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors)
+RETURN path
+
+# You can return all properties if you are not sure exactly what you are looking for:
+MATCH (p:Person)-[relationship]-(:Movie {title: "Cloud Atlas"})
+RETURN p.name, type(relationship), relationship
+
