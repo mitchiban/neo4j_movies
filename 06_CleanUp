@@ -6,3 +6,7 @@ DETACH DELETE n
 MATCH ()
 RETURN count (*)
 
+# Delete all nodes and rels in db
+MATCH (n)
+DETACH DELETE n
+
